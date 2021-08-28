@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+  
+{% block title %}Books index{% endblock %}
+
+{% block body %}
+<div class="container">
+ {% if app.user %}
+   {% else %}
+    <a class="btn btn-primary" href="/login">Login</a>
+    </div>
+{% endif %}
+<div class="container"
+    <h1>Books</h1>
+    {% if app.user %}
+        <a href="{{ path('books_new') }}">Create new</a>
+    {% endif %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Cover</th>
+                <th>File</th>
+                <th>Date</th>
+                {% if app.user %}
+                    <th>actions</th>
+                {% endif %}
+                
+            </tr>
+        </thead>
+        <tbody>
+        {% for book in books %}
+            <tr>
+                <td>{{ book.name }}</td>
+                <td>{{ book.author }}</td>
+                <td><img src="{{ asset('uploads/img/' ~ book.cover) }}" width="286" height="286" class="card-img-top" alt="Картинка продукта"></td>
+                <td> <a  href="{{ asset('uploads/file/' ~ book.file) }}">Ссылка на файл</a><br></td>
+             <td>{{ book.date ? book.date|date('Y-m-d') : '' }}</td>
+                {% if app.user %}
+                    <td>
+                        {{ include('books/_delete_form.html.twig') }}
+                        <a href="{{ path('books_edit', {'id': book.id}) }}">edit</a>
+                    </td>
+                {% endif %}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
